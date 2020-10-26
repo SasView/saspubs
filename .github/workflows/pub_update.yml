@@ -22,19 +22,15 @@ jobs:
 
     steps:
       - name: "Checkout saspubs"
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         with:
-          repository: sasview/saspubs
-          ref: master
           ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
-          path: ./saspubs
       - name: "Checkout sasview.github.io"
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         with:
           repository: sasview/sasview.github.io
           ref: master
           ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
-          path: ./sasview.github.io
       - name: "Setup Python"
         uses: actions/setup-python@v1
         with:
@@ -45,5 +41,5 @@ jobs:
           python -m pip install wheel setuptools
           python -m pip install citeproc-py lxml numba numpy numpydoc pandas pandocfilters sphinx
       - name: "Run shell script"
-        run: ./.github/saspubs/shell_scripts/modification_and_duplicate_check.sh ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
+        run: ./shell_scripts/modification_and_duplicate_check.sh ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
         shell: bash
