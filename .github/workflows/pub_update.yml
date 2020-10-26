@@ -45,4 +45,4 @@ jobs:
           python -m pip install wheel setuptools
           python -m pip install citeproc-py lxml numba numpy numpydoc pandas pandocfilters sphinx
       - name: "Run shell script"
-        run: shell_scripts/modification_and_duplicate_check.sh ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
+        run: ./saspubs/shell_scripts/modification_and_duplicate_check.sh ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
