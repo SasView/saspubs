@@ -21,6 +21,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: "Checkout saspubs"
+        uses: actions/checkout@master
+        with:
+          repository: sasview/saspubs
+          ref: master
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+          path: ./saspubs
+      - name: "Checkout sasview.github.io"
+        uses: actions/checkout@master
+        with:
+          repository: sasview/sasview.github.io
+          ref: master
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+          path: ./sasview.github.io
       - name: "Setup Python"
         uses: actions/setup-python@v2
         with:
@@ -28,13 +42,6 @@ jobs:
       - name: "Install Python dependencies"
         uses: py-actions/py-dependency-install@v2
         with:
-          path: "build_tools/requirements.txt"
-      - name: "Checkout"
-        uses: actions/checkout@master
-        with:
-          repository: sasview/sasview.github.io
-          ref: master
-          token: ${{ secrets.API_TOKEN_GITHUB }}
-          path: ./sasview.github.io
+          path: ./saspubs/build_tools/requirements.txt
       - name: "run shell script that calls python files"
-        run: ./shell_scripts/modification_and_duplicate_check.sh ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
+        run: ./saspubs/shell_scripts/modification_and_duplicate_check.sh ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
