@@ -26,14 +26,14 @@ jobs:
         with:
           repository: sasview/saspubs
           ref: master
-          token: ${{ secrets.API_TOKEN_GITHUB }}
+          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
           path: ./saspubs
       - name: "Checkout sasview.github.io"
         uses: actions/checkout@master
         with:
           repository: sasview/sasview.github.io
           ref: master
-          token: ${{ secrets.API_TOKEN_GITHUB }}
+          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
           path: ./sasview.github.io
       - name: "Setup Python"
         uses: actions/setup-python@v2
