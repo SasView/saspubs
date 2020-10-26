@@ -11,17 +11,17 @@ APIKEY=$2
 cd "$(dirname "$0")";
 cd "../";
 # Pull latest saspubs repo
-#ssh-agent -t 60 bash -c "ssh-add $SSHKEY; git pull";
+ssh-agent -t 60 bash -c "ssh-add $SSHKEY; git pull";
 # Output the latest publications page
 python update_current_list.py SASVIEW $APIKEY;
-## copy the page to the sasview.github.io repo
-#cp static/SASVIEW_publications.md ../sasview.github.io/publications.md;
-## Move to and pull latest sasview.github.io repo
-#cd ../sasview.github.io/;
-#ssh-agent -t 60 bash -c "ssh-add $SSHKEY; git pull";
-## Check for differences
-#if ! git diff-index --quiet HEAD --; then
-#  # Commit and push any changes to the publications page
-#  git commit publications.md -m "publications auto-modification-and-duplicate-removal-update `date -d now`";
-#  ssh-agent -t 60 bash -c "ssh-add $SSHKEY;  git push";
-#fi
+# copy the page to the sasview.github.io repo
+cp static/SASVIEW_publications.md ../sasview.github.io/publications.md;
+# Move to and pull latest sasview.github.io repo
+cd ../sasview.github.io/;
+ssh-agent -t 60 bash -c "ssh-add $SSHKEY; git pull";
+# Check for differences
+if ! git diff-index --quiet HEAD --; then
+  # Commit and push any changes to the publications page
+  git commit publications.md -m "publications auto-modification-and-duplicate-removal-update `date -d now`";
+  ssh-agent -t 60 bash -c "ssh-add $SSHKEY;  git push";
+fi

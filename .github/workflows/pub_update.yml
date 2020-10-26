@@ -21,10 +21,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Checkout saspubs"
-        uses: actions/checkout@v2
-        with:
-          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
       - name: "Checkout sasview.github.io"
         uses: actions/checkout@v2
         with:
@@ -40,6 +36,8 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install wheel setuptools
           python -m pip install citeproc-py lxml numba numpy numpydoc pandas pandocfilters sphinx
-      - name: "Run shell script"
-        run: ./shell_scripts/modification_and_duplicate_check.sh ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
-        shell: bash
+      - name: "Run update script"
+        uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
+        run: python ./update_current_list.py ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
