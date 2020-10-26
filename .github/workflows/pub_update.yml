@@ -42,6 +42,6 @@ jobs:
       - name: "Install Python dependencies"
         uses: py-actions/py-dependency-install@v2
         with:
-          path: ./saspubs/build_tools/requirements.txt
+          path: build_tools/requirements.txt
       - name: "run shell script that calls python files"
-        run: ./saspubs/shell_scripts/modification_and_duplicate_check.sh ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
+        run: shell_scripts/modification_and_duplicate_check.sh ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
