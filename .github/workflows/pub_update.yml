@@ -40,8 +40,9 @@ jobs:
         with:
           python-version: '3.6'
       - name: "Install Python dependencies"
-        uses: py-actions/py-dependency-install@v2
-        with:
-          path: build_tools/requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install wheel setuptools
+          python -m pip install citeproc-py citeproc-py-styles lxml numba numpy numpydoc pandas pandocfilters sphinx sphinxcontrib-websupport
       - name: "run shell script that calls python files"
         run: shell_scripts/modification_and_duplicate_check.sh ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
