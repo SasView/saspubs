@@ -13,15 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Activate ssh agent"
-        run: ssh-agent bash -c "ssh-add ${{ secrets.API_TOKEN_GITHUB }}"
       - name: "Checkout saspubs"
         uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
       - name: "Checkout sasview.github.io"
         uses: actions/checkout@v2
         with:
           repository: sasview/sasview.github.io
           ref: master
+          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
       - name: "Setup Python"
         uses: actions/setup-python@v2
         with:
