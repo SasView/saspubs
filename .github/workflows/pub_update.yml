@@ -41,10 +41,13 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install wheel setuptools
           python -m pip install citeproc-py lxml numba numpy numpydoc pandas pandocfilters sphinx
-      - name: "Debugging sequence"
+      - name: "Debugging - Show location of github workspace"
         run: echo $GITHUB_WORKSPACE
       - name: "Create json file and md page"
         run: python ./instrument_zotero_feed.py SASVIEW
-      # TODO: Reinstate once instrument_zotero_feed is working
-      # - name: "Look for updates using citeproc"
-      #   run: python ./update_current_list.py ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
+      - name: "Debugging - json files exist"
+        run: less ./data/SASVIEW.json
+      - name: "Debugging - md files exist"
+        run: less ./static/SASVIEW_publications.md
+      - name: "Look for updates using citeproc"
+        run: python ./update_current_list.py ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
