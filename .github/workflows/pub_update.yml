@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Set env
-          run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
+        run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(env) }}
