@@ -1,5 +1,4 @@
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# Run whenever master is updated, whenever a pull request against master is opened, and everyday at midnight.
 on:
   schedule:
     - cron: "0 0 * * *"
@@ -8,31 +7,24 @@ on:
   pull_request:
     branches: [ master ]
 
-# Defines the run type
-defaults:
-  run:
-    shell: bash
-    working-directory: shell_scripts
-
-# Defines the jobs to perform
 jobs:
   build:
-    name: Check for changes and make updates to publications.
+    name: "Check for changes and make updates to publications."
     runs-on: ubuntu-latest
 
     steps:
       - name: "Checkout saspubs"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
         with:
           ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
       - name: "Checkout sasview.github.io"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
         with:
           repository: sasview/sasview.github.io
           ref: master
           ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
       - name: "Setup Python"
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: '3.6'
       - name: "Install Python dependencies"
