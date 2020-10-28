@@ -21,7 +21,7 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
       - run: echo $npm_config_cache
         env:
-          npm_config_cache: ${{ env.workspace }}/frontend_cache
+          npm_config_cache: ${{ env.workspace }}
       - name: "Checkout sasview.github.io"
         uses: actions/checkout@v2
         with:
@@ -44,7 +44,7 @@ jobs:
       - name: "Debugging sequence"
         run: echo $GITHUB_WORKSPACE
       - name: "Create json file and md page"
-        run: python $npm_config_cache/instrument_zotero_feed.py SASVIEW
+        run: python ./instrument_zotero_feed.py SASVIEW
       # TODO: Reinstate once instrument_zotero_feed is working
       # - name: "Look for updates using citeproc"
       #   run: python ./update_current_list.py ${{ secrets.API_TOKEN_GITHUB }} ${{ secrets.ZOTERO_KEY }}
