@@ -48,5 +48,10 @@ jobs:
           ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
       - name: "Copy md into saspubs"
         run: cp -f ../publications.md ./publications.md
-      - name: "Check for github changes"
-        run: git diff
+      - name: "Commit and push any git changes."
+        run: |
+          git diff
+          if ! git diff-index --quiet HEAD --; then
+            git commit ./publications.md -m "publications auto-modification-and-duplicate-removal-update via github-actions `date -d now`";
+            git push
+          fi
