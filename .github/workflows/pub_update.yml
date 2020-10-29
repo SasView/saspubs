@@ -21,13 +21,6 @@ jobs:
       - run: echo $npm_config_cache
         env:
           npm_config_cache: ${{ env.workspace }}
-      - name: "Checkout sasview.github.io"
-        uses: actions/checkout@v2
-        with:
-          repository: sasview/sasview.github.io
-          path: io
-          ref: master
-          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
       - name: "Checkout saspubs"
         uses: actions/checkout@v2
         with:
@@ -45,9 +38,15 @@ jobs:
         run: python ./instrument_zotero_feed.py SASVIEW
       - name: "Look for updates using citeproc"
         run: python ./update_current_list.py SASVIEW ${{ secrets.ZOTERO_KEY }}
-      - name: "Copy md file from saspubs to sasview.github.io"
-        run: cp -f ./static/SASVIEW_publications.md ../io/publications.md
-      - name: "Move to sasview.github.io directory"
-        run: cd ../io
+      - name: "Copy md file from saspubs up one level"
+        run: cp -f ./static/SASVIEW_publications.md ../publications.md
+      - name: "Checkout sasview.github.io"
+        uses: actions/checkout@v2
+        with:
+          repository: sasview/sasview.github.io
+          ref: master
+          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
+      - name: "Copy md into saspubs"
+        run: cp -f ../publications.md ./publications.md
       - name: "Check for github changes"
         run: git diff
