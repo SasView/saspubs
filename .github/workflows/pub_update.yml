@@ -52,6 +52,8 @@ jobs:
         run: |
           git diff
           if ! git diff-index --quiet HEAD --; then
-            git commit ./publications.md -m "publications auto-modification-and-duplicate-removal-update via github-actions `date -d now`";
-            git push
+            git config --global user.name ${{ secrets.GIT_USER_NAME }}
+            git config --global user.email ${{ secrets.GIT_EMAIL }}
+            git commit ./publications.md -m "publications auto-modification-and-duplicate-removal-update via github-actions `date -d now`"
+            ssh-agent -t 60 bash -c "ssh-add ${{ secrets.API_TOKEN_GITHUB }};  git push";
           fi
