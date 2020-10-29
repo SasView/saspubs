@@ -11,7 +11,6 @@ jobs:
   build:
     name: "Check for changes and make updates to publications."
     runs-on: ubuntu-latest
-
     steps:
       - name: Set env
         run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
@@ -26,6 +25,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: sasview/sasview.github.io
+          path: io
           ref: master
           ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
       - name: "Checkout saspubs"
@@ -41,15 +41,13 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install wheel setuptools
           python -m pip install citeproc-py lxml numba numpy numpydoc pandas pandocfilters sphinx
-      - name: "Debugging - Show location of github workspace"
-        run: echo $GITHUB_WORKSPACE
-      - name: "Debugging - Pip List"
-        run: python -m pip list
       - name: "Create json file and md page"
         run: python ./instrument_zotero_feed.py SASVIEW
-      - name: "Debugging - json files exist"
-        run: less ./data/SASVIEW.json
-      - name: "Debugging - md files exist"
-        run: less ./static/SASVIEW_publications.md
       - name: "Look for updates using citeproc"
         run: python ./update_current_list.py SASVIEW ${{ secrets.ZOTERO_KEY }}
+      - name: "Copy md file from saspubs to sasview.github.io"
+        run: cp -f ./static/SASVIEW_publications.md ../io/publications.md
+      - name: "Move to sasview.github.io directory"
+        run: cd ../io
+      - name: "Check for github changes"
+        run: git diff
