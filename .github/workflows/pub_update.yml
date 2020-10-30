@@ -18,7 +18,8 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(env) }}
         run: echo "$GITHUB_CONTEXT"
-      - run: "C) Set Environment Variable"
+      - name: "C) Set Environment Variable"
+        run: echo $npm_config_cache
         env:
           npm_config_cache: ${{ env.workspace }}
       - name: "D) Setup Python"
