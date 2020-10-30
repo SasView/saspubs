@@ -11,9 +11,9 @@ Based on [Zotero](https://www.zotero.org)
 - SasView members manage publication list
 - Collection ID(s) for SasView list(s) is added to config.py for automatic sync with sasview pages (frontend)
 
-### Recurring backend job
+### Recurring Github Action
 
-- Every 5 minutes: look for new entries or deletions from Zotero, through the api (https://api.zotero.org)
+- Every hour: Run /.github/workflows/pub_update.yml that pulls in all publications from Zotero using the Zotero api (https://api.zotero.org) and compares each citation to latest version published. Zotero entries and the publications website are update as needed.
 
 ## Frontend
 
