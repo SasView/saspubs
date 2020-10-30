@@ -22,19 +22,19 @@ jobs:
         run: echo $npm_config_cache
         env:
           npm_config_cache: ${{ env.workspace }}
-      - name: "D) Setup Python"
+      - name: "D) Checkout saspubs Repository"
+        uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
+      - name: "E) Setup Python"
         uses: actions/setup-python@v2
         with:
           python-version: '3.6'
-      - name: "E) Install Python dependencies"
+      - name: "F) Install Python dependencies"
         run: |
           python -m pip install --upgrade pip
           python -m pip install wheel setuptools
           python -m pip install -r ./build_tools/requirements.txt
-      - name: "F) Checkout saspubs Repository"
-        uses: actions/checkout@v2
-        with:
-          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
       - name: "G) Get Most Recent List of Publications From Zotero"
         run: python ./instrument_zotero_feed.py SASVIEW
       - name: "H) Look For Updates to Zotero List Using Citation Finder"
