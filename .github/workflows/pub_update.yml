@@ -1,7 +1,7 @@
 # Run once every 4 hours
 on:
   schedule:
-    - cron: "* */4 * * *"
+    - cron: "0 */4 * * *"
 
 jobs:
   build:
