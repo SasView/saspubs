@@ -1,7 +1,7 @@
-# Run whenever master is updated, whenever a pull request against master is opened, and everyday at midnight.
+# Run whenever master is updated, whenever a pull request against master is opened, and once per hour
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 * * * *"
   push:
     branches: [ master ]
   pull_request:
@@ -9,51 +9,51 @@ on:
 
 jobs:
   build:
-    name: "Check for changes and make updates to publications."
+    name: "SasView Publications: Auto-Check for New, Deleted, and Modified Publications"
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: "A) Set environment variables"
         run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
-      - name: Dump GitHub context
+      - name: "B) Dump GitHub context"
         env:
           GITHUB_CONTEXT: ${{ toJson(env) }}
         run: echo "$GITHUB_CONTEXT"
-      - run: echo $npm_config_cache
+      - run: C) echo $npm_config_cache
         env:
           npm_config_cache: ${{ env.workspace }}
-      - name: "Checkout saspubs"
-        uses: actions/checkout@v2
-        with:
-          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
-      - name: "Setup Python"
+      - name: "D) Setup Python"
         uses: actions/setup-python@v2
         with:
           python-version: '3.6'
-      - name: "Install Python dependencies"
+      - name: "E) Install Python dependencies"
         run: |
           python -m pip install --upgrade pip
           python -m pip install wheel setuptools
-          python -m pip install citeproc-py lxml numba numpy numpydoc pandas pandocfilters sphinx
-      - name: "Create json file and md page"
+          python -m pip install -r ./build_tools/requirements.txt
+      - name: "F) Checkout saspubs Repository"
+        uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
+      - name: "G) Get Most Recent List of Publications From Zotero"
         run: python ./instrument_zotero_feed.py SASVIEW
-      - name: "Look for updates using citeproc"
+      - name: "H) Look For Updates to Zotero List Using Citation Finder"
         run: python ./update_current_list.py SASVIEW ${{ secrets.ZOTERO_KEY }}
-      - name: "Copy md file from saspubs up one level"
+      - name: "I) Copy Markdown File Out of Workspace"
         run: cp -f ./static/SASVIEW_publications.md ../publications.md
-      - name: "Checkout sasview.github.io"
+      - name: "J) Checkout sasview.github.io Repository"
         uses: actions/checkout@v2
         with:
           repository: sasview/sasview.github.io
           ref: master
           ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
-      - name: "Copy md into saspubs"
+      - name: "K) Copy Markdown File Back Into Workspace"
         run: cp -f ../publications.md ./publications.md
-      - name: "Commit and push any git changes."
+      - name: "L) Commit And Push Any Changes to Github"
         run: |
           git diff
           if ! git diff-index --quiet HEAD --; then
             git config --global user.name ${{ secrets.GIT_USER_NAME }}
             git config --global user.email ${{ secrets.GIT_EMAIL }}
-            git commit ./publications.md -m "publications auto-modification-and-duplicate-removal-update via github-actions `date -d now`"
+            git commit ./publications.md -m "publications auto-update `date -d now`"
             git push
           fi
