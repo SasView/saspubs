@@ -1,11 +1,7 @@
-# Run whenever master is updated, whenever a pull request against master is opened, and once per hour
+# Run once every 4 hours
 on:
   schedule:
-    - cron: "0 * * * *"
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    - cron: "* */4 * * *"
 
 jobs:
   build:
