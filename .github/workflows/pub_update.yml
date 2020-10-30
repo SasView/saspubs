@@ -12,13 +12,13 @@ jobs:
     name: "SasView Publications: Auto-Check for New, Deleted, and Modified Publications"
     runs-on: ubuntu-latest
     steps:
-      - name: "A) Set environment variables"
+      - name: "A) Set Environment Location"
         run: echo ::set-env name=workspace::$GITHUB_WORKSPACE
       - name: "B) Dump GitHub context"
         env:
           GITHUB_CONTEXT: ${{ toJson(env) }}
         run: echo "$GITHUB_CONTEXT"
-      - run: C) echo $npm_config_cache
+      - run: "C) Set Environment Variable"
         env:
           npm_config_cache: ${{ env.workspace }}
       - name: "D) Setup Python"
