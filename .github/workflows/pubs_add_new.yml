@@ -31,19 +31,19 @@ jobs:
         run: python ./instrument_zotero_feed.py SASVIEW
       - name: "F1) Archive markdown and json files"
         uses: actions/upload-artifact@v2
-          with:
-            name: ./data/SASVIEW.json
-            path: /artifacts/data/SASVIEW.json
+        with:
+          name: ./data/SASVIEW.json
+          path: /artifacts/data/SASVIEW.json
       - name: "F2) Archive markdown and json files"
         uses: actions/upload-artifact@v2
-          with:
-            name: ./data/.SASVIEW_version.json
-            path: /artifacts/data/.SASVIEW_version.json
+        with:
+          name: ./data/.SASVIEW_version.json
+          path: /artifacts/data/.SASVIEW_version.json
       - name: "F3) Archive markdown and json files"
         uses: actions/upload-artifact@v2
-          with:
-            name: ./static/SASVIEW_publications.md
-            path: /artifacts/static/SASVIEW_publications.md
+        with:
+          name: ./static/SASVIEW_publications.md
+          path: /artifacts/static/SASVIEW_publications.md
       - name: "G) Checkout sasview.github.io Repository"
         uses: actions/checkout@v2
         with:
