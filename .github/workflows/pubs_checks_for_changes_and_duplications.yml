@@ -1,9 +1,7 @@
-# Run once every 30 minutes [or, while testing, for PRs against master...]
+# Run every night at midnight
 on:
   schedule:
     - cron: "0 0 * * *"
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
