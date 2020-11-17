@@ -39,31 +39,31 @@ jobs:
         with:
           files: "/artifacts/.SASVIEW_version.json"
       - name: "E1) Download archived files if they exist"
-        if: md_file_exists
+        if: steps.md_file_exists.outputs.files_exists == 'true'
         uses: actions/download-artifact@v2
         with:
           path: /artifacts/
           name: SASVIEW_publications.md
       - name: "E2) Download archived files if they exist"
-        if: json_file_exists
+        if: steps.json_file_exists.outputs.files_exists == 'true'
         uses: actions/download-artifact@v2
         with:
           path: /artifacts/
           name: SASVIEW.json
       - name: "E3) Download archived files if they exist"
-        if: version_file_exists
+        if: steps.version_file_exists.outputs.files_exists == 'true'
         uses: actions/download-artifact@v2
         with:
           path: /artifacts/
           name: .SASVIEW_version.json
       - name: "F1) Moved files to appropriate places"
-        if: md_file_exists
+        if: steps.md_file_exists.outputs.files_exists == 'true'
         run: cp SASVIEW_publications.md ./static/SASVIEW_publications.md
       - name: "F2) Moved files to appropriate places"
-        if: json_file_exists
+        if: steps.json_file_exists.outputs.files_exists == 'true'
         run: cp SASVIEW.json ./data/SASVIEW.json
       - name: "F3) Moved files to appropriate places"
-        if: version_file_exists
+        if: steps.version_file_exists.outputs.files_exists == 'true'
         run: cp .SASVIEW_version.json ./data/.SASVIEW_version.json
       - name: "G) Update publications list using the Zotero API"
         run: python ./instrument_zotero_feed.py SASVIEW
