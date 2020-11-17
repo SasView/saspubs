@@ -10,92 +10,85 @@ jobs:
     name: "SasView Publications: Automated Check for New Publications"
     runs-on: ubuntu-latest
     steps:
-      - name: "A) Checkout saspubs Repository"
+      - name: "Checkout saspubs Repository"
         uses: actions/checkout@v2
         with:
           ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
-      - name: "B) Setup Python"
+      - name: "Setup Python"
         uses: actions/setup-python@v2
         with:
           python-version: '3.6'
-      - name: "C) Install Python dependencies"
+      - name: "Install Python dependencies"
         run: |
           python -m pip install --upgrade pip
           python -m pip install wheel setuptools
           python -m pip install -r ./build_tools/requirements.txt
-      - name: "D1) Check that files exist"
+      - name: "Fetch all files from archive"
+        uses: actions/download-artifact@v2
+        with:
+          name: SASVIEW_publications.md
+      - name: "Fetch SASVIEW.json from archive"
+        uses: actions/download-artifact@v2
+        with:
+          name: SASVIEW.json
+      - name: "Fetch .SASVIEW_version.json from archive"
+        uses: actions/download-artifact@v2
+        with:
+          name: .SASVIEW_version.json
+      - name: "Check for SASVIEW_publications.md"
         id: md_file_exists
         uses: andstor/file-existence-action@v1
         with:
-          files: "/artifacts/SASVIEW_publications.md"
-      - name: "D2) Check that files exist"
+          files: "./SASVIEW_publications.md"
+      - name: "Check for SASVIEW.json"
         id: json_file_exists
         uses: andstor/file-existence-action@v1
         with:
-          files: "/artifacts/SASVIEW.json"
-      - name: "D3) Check that files exist"
+          files: "./SASVIEW.json"
+      - name: "Check for .SASVIEW_version.json"
         id: version_file_exists
         uses: andstor/file-existence-action@v1
         with:
-          files: "/artifacts/.SASVIEW_version.json"
-      - name: "E1) Download archived files if they exist"
-        if: steps.md_file_exists.outputs.files_exists == 'true'
-        uses: actions/download-artifact@v2
-        with:
-          path: /artifacts/
-          name: SASVIEW_publications.md
-      - name: "E2) Download archived files if they exist"
-        if: steps.json_file_exists.outputs.files_exists == 'true'
-        uses: actions/download-artifact@v2
-        with:
-          path: /artifacts/
-          name: SASVIEW.json
-      - name: "E3) Download archived files if they exist"
-        if: steps.version_file_exists.outputs.files_exists == 'true'
-        uses: actions/download-artifact@v2
-        with:
-          path: /artifacts/
-          name: .SASVIEW_version.json
-      - name: "F1) Moved files to appropriate places"
+          files: "./.SASVIEW_version.json"
+      - name: "Move SASVIEW_publications.md to static folder"
         if: steps.md_file_exists.outputs.files_exists == 'true'
         run: cp SASVIEW_publications.md ./static/SASVIEW_publications.md
-      - name: "F2) Moved files to appropriate places"
+      - name: "Move SASVIEW.json to data folder"
         if: steps.json_file_exists.outputs.files_exists == 'true'
         run: cp SASVIEW.json ./data/SASVIEW.json
-      - name: "F3) Moved files to appropriate places"
+      - name: "Move .SASVIEW_version.json to data folder"
         if: steps.version_file_exists.outputs.files_exists == 'true'
         run: cp .SASVIEW_version.json ./data/.SASVIEW_version.json
-      - name: "G) Update publications list using the Zotero API"
+      - name: "Update publications list using the Zotero API"
         run: python ./instrument_zotero_feed.py SASVIEW
-      - name: "H1) Archive markdown and json files"
+      - name: "Archive markdown and json files"
         uses: actions/upload-artifact@v2
         with:
           name: SASVIEW.json
           path: ./data/
-      - name: "H2) Archive markdown and json files"
+      - name: "Archive markdown and json files"
         uses: actions/upload-artifact@v2
         with:
           name: .SASVIEW_version.json
           path: ./data/
-      - name: "H3) Archive markdown and json files"
+      - name: "Archive markdown and json files"
         uses: actions/upload-artifact@v2
         with:
           name: SASVIEW_publications.md
           path: ./static/
-      - name: "I) Checkout sasview.github.io Repository"
+      - name: "Checkout sasview.github.io Repository"
         uses: actions/checkout@v2
         with:
           repository: sasview/sasview.github.io
           ref: master
           ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
-      - name: "J) Download archived files (redux)"
+      - name: "Download archived files (redux)"
         uses: actions/download-artifact@v2
         with:
           name: SASVIEW_publications.md
-          path: /artifacts/
-      - name: "K) Copy Markdown File Back Into Workspace"
+      - name: "Copy Markdown File Back Into Workspace"
         run: cp -f ./SASVIEW_publications.md ./publications.md
-      - name: "L) Commit And Push Any Changes to Github"
+      - name: "Commit And Push Any Changes to Github"
         run: |
           git diff
           if ! git diff-index --quiet HEAD --; then
