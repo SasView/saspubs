@@ -1,0 +1,53 @@
+# Run every night at midnight
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  build:
+    name: "SasView Publications: Automated Check for New Publications"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "A) Checkout saspubs Repository"
+        uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
+      - name: "B) Setup Python"
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+      - name: "C) Install Python dependencies"
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install wheel setuptools
+          python -m pip install -r ./build_tools/requirements.txt
+      - name: "D) Create publications list using the Zotero API"
+        run: python ./instrument_zotero_feed.py SASVIEW
+      - name: "E) Look For Updates to Zotero List Using Citation Finder"
+        run: python ./update_current_list.py SASVIEW ${{ secrets.ZOTERO_KEY }}
+      - name: "F) Archive markdown file"
+        uses: actions/upload-artifact@v2
+        with:
+          name: SASVIEW_publications.md
+          path: ./static/
+      - name: "G) Checkout sasview.github.io Repository"
+        uses: actions/checkout@v2
+        with:
+          repository: sasview/sasview.github.io
+          ref: master
+          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
+      - name: "H) Download archived markdown file"
+        uses: actions/download-artifact@v2
+        with:
+          name: SASVIEW_publications.md
+      - name: "I) Copy Markdown File Back Into Workspace"
+        run: cp -f ./SASVIEW_publications.md ./publications.md
+      - name: "J) Commit And Push Any Changes to Github"
+        run: |
+          git diff
+          if ! git diff-index --quiet HEAD --; then
+            git config --global user.name ${{ secrets.GIT_USER_NAME }}
+            git config --global user.email ${{ secrets.GIT_EMAIL }}
+            git commit ./publications.md -m "publications auto-update `date -d now`"
+            git push
+          fi
