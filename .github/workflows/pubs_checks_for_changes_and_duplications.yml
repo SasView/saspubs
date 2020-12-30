@@ -1,12 +1,18 @@
 # Run every night at midnight
 on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   schedule:
     - cron: "0 0 * * *"
 
 jobs:
   build:
     name: "SasView Publications: Automated Check for New Publications"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: "A) Checkout saspubs Repository"
         uses: actions/checkout@v2
