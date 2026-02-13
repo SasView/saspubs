@@ -5,19 +5,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: "Archive markdown file"
-        uses: actions/upload-artifact@v4
-        with:
-          name: SASVIEW_publications.md
-          path: ./static/
       - name: "Checkout sasview.github.io Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: sasview/sasview.github.io
           ref: master
           ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
       - name: "Download archived markdown file"
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: SASVIEW_publications.md
       - name: "Copy Markdown File Back Into Workspace"
