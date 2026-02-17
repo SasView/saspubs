@@ -18,7 +18,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           run-id: ${{ github.event.workflow_run.id }}
-          name: SASVIEW_publications.md
+          run: ls -R
       - name: "Copy Markdown File Back Into Workspace"
         run: cp -f ./SASVIEW_publications.md ./publications.md
       - name: "Commit And Push Any Changes to Github"

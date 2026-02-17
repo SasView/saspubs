@@ -1,7 +1,6 @@
-# Run every hour on the hour
+# Run for pull requests (until fixed)
 on:
-  schedule:
-    - cron: "0 * * * *"
+  pull_request:
 
 jobs:
   call-workflow-start:
