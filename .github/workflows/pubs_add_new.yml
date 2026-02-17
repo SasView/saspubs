@@ -1,5 +1,6 @@
 # Run for pull requests (until fixed)
 on:
+  push:
   pull_request:
 
 jobs:
