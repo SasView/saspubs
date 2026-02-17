@@ -1,7 +1,6 @@
 # Run every hour on the hour
 on:
-  schedule:
-    - cron: "0 * * * *"
+  push:
 
 jobs:
   call-workflow-start:
