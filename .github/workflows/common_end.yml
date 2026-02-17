@@ -19,13 +19,10 @@ jobs:
         with:
           run-id: ${{ github.event.workflow_run.id }}
       - name: "Copy Markdown File Back Into Workspace"
-        run: |
-          ls -R
-          cp -rf ./SASVIEW_publications.md ./publications.md
+        run: cp -rf ./SASVIEW_publications.md ./publications.md
       - name: "Commit And Push Any Changes to Github"
         run: |
-          git diff
-          if ! git diff-index --quiet HEAD --; then
+          if [[ `git status --porcelain --untracked-files=no` ]]; then
             git config --global user.name ${{ secrets.GIT_USER_NAME }}
             git config --global user.email ${{ secrets.GIT_EMAIL }}
             git commit ./publications.md -m "publications auto-update `date -d now`"
