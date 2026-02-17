@@ -15,6 +15,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: SASVIEW_publications.md
+          path: ./static/
       - name: "Copy Markdown File Back Into Workspace"
         run: cp -f ./SASVIEW_publications.md ./publications.md
       - name: "Commit And Push Any Changes to Github"
