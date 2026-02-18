@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "Checking for git changes..."
           # TODO: This command is throwing an error. Fix it!
-          if git status --porcelain --untracked-files=no; then
+          if [[git status --porcelain --untracked-files=no ]]; then
             echo "Changes found in git status"
             git add ./publications.md
             echo "Changes added to git"
@@ -35,6 +35,6 @@ jobs:
             echo "Local changes committed"
             git push
             echo "Local changes pushed"
-          else;
+          else
             echo "No changes found. Skipping push."
           fi
