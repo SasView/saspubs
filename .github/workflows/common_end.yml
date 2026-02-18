@@ -28,9 +28,6 @@ jobs:
             echo "Changes found in git status"
             git add ./publications.md
             echo "Changes added to git"
-            git config --global user.name ${{ secrets.GIT_USER_NAME }}
-            git config --global user.email ${{ secrets.GIT_EMAIL }}
-            echo "Git Config updated"
             git commit -m "publications auto-update"
             echo "Local changes committed"
             git push
