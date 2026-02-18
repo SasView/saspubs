@@ -13,7 +13,8 @@ jobs:
         with:
           repository: sasview/sasview.github.io
           ref: master
-          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
+          persist-credentials: false
+          fetch-depth: 0
       - name: "Download archived markdown file"
         uses: actions/download-artifact@v5
         with:
@@ -33,8 +34,11 @@ jobs:
             echo "Git Config updated"
             git commit -m "publications auto-update"
             echo "Local changes committed"
-            git push
-            echo "Local changes pushed"
           else
             echo "No changes found. Skipping push."
           fi
+      - name: Push changes
+        uses: ad-m/github-push-action@v1
+        with:
+          github_token: ${{ secrets.API_TOKEN_GITHUB }}
+          branch: ${{ github.ref }}
