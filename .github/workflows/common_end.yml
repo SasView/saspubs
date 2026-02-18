@@ -24,17 +24,11 @@ jobs:
         run: cp -rf ./SASVIEW_publications.md ./publications.md
       - name: "Commit And Push Any Changes to Github"
         run: |
-          echo "Checking for git changes..."
-          # TODO: This command is throwing an error. Fix it!
           if [[ -n $(git status --porcelain) ]]; then
-            echo "Changes found in git status"
             git add ./publications.md
-            echo "Changes added to git"
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            echo "Git Config updated"
             git commit -m "publications auto-update"
-            echo "Local changes committed"
           else
             echo "No changes found. Skipping push."
           fi
