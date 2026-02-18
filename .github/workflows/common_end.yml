@@ -23,7 +23,8 @@ jobs:
       - name: "Commit And Push Any Changes to Github"
         run: |
           echo "Checking for git changes..."
-          if [[ `git status --porcelain --untracked-files=no` ]]; then
+          # TODO: This command is throwing an error. Fix it!
+          if git status --porcelain --untracked-files=no; then
             echo "Changes found in git status"
             git add ./publications.md
             echo "Changes added to git"
