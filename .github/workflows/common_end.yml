@@ -37,3 +37,4 @@ jobs:
           branch: 'auto-update-pubs'
           base: 'master'
           draft: false
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
