@@ -13,7 +13,7 @@ jobs:
         with:
           repository: sasview/sasview.github.io
           ref: master
-          ssh-key: ${{ secrets.API_TOKEN_GITHUB }}
+          ssh-key: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: false
           fetch-depth: 0
       - name: "Download archived markdown file"
