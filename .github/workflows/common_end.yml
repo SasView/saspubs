@@ -28,14 +28,12 @@ jobs:
           else
             echo "No changes found. Skipping push."
           fi
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+      - name: "Push to the sasview.github.io repo"
+        run: ad-m/github-push-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: 'Publications auto-update'
-          body: 'Automatic update of the publications lists from the sasview/saspubs repo CI.'
-          branch: 'auto-update-pubs'
-          base: 'master'
-          draft: false
-          committer: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: sasview/sasview.github.io
+          branch: auto-update-pubs
+          push_to_submodules: on-demand
+          directory: .
+          force: true
