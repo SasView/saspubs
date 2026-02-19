@@ -4,6 +4,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: "Checkout sasview.github.io Repository"
         uses: actions/checkout@v5
@@ -33,7 +36,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: sasview/sasview.github.io
-          branch: auto-update-pubs
+          branch: master
           push_to_submodules: on-demand
           directory: .
           force: true
