@@ -29,7 +29,7 @@ jobs:
             echo "No changes found. Skipping push."
           fi
       - name: "Push to the sasview.github.io repo"
-        run: ad-m/github-push-action@v1
+        uses: ad-m/github-push-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: sasview/sasview.github.io
