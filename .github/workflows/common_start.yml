@@ -1,4 +1,3 @@
-# Run every hour on the hour
 on:
   workflow_call:
 

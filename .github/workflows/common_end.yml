@@ -4,16 +4,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
     steps:
       - name: "Checkout sasview.github.io Repository"
         uses: actions/checkout@v5
         with:
           repository: sasview/sasview.github.io
           ref: master
-          ssh-key: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: false
           fetch-depth: 0
       - name: "Download archived markdown file"
