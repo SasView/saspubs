@@ -24,7 +24,7 @@ jobs:
       - name: "Commit And Push Any Changes to Github"
         run: |
           if [[ -n $(git status --porcelain) ]]; then
-            get remote set-url origin git@github.com:sasview/sasview.github.io.get
+            git remote set-url origin git@github.com:sasview/sasview.github.io.get
             git checkout -b auto-update-pubs
             git add ./publications.md
             git config user.name "github-actions[bot]"
