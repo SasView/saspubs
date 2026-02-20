@@ -24,22 +24,15 @@ jobs:
       - name: "Commit And Push Any Changes to Github"
         run: |
           if [[ -n $(git status --porcelain) ]]; then
-            git remote set-url origin git@github.com:sasview/sasview.github.io.git
             git checkout -b auto-update-pubs
             git add ./publications.md
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "publications auto-update"
-            git push --set-upstream origin auto-update-pubs
           else
             echo "No changes found. Skipping push."
           fi
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+      - name: Push changes
+        uses: ad-m/github-push-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: 'Publications auto-update'
-          body: 'Automatic update of the publications lists from the sasview/saspubs repo CI.'
-          branch: 'auto-update-pubs'
-          base: 'master'
-          draft: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: sasview/sasview.github.io
+          branch: auto-update-pubs
