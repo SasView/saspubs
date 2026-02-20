@@ -24,6 +24,8 @@ jobs:
       - name: "Commit And Push Any Changes to Github"
         run: |
           if [[ -n $(git status --porcelain) ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git checkout -b auto-update-pubs
             git add ./publications.md
             git commit -m "publications auto-update"
