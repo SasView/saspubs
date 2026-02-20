@@ -4,12 +4,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: "Checkout sasview.github.io Repository"
         uses: actions/checkout@v5
-        permissions:
-          contents: write
-          pull-requests: write
         with:
           repository: sasview/sasview.github.io
           ref: master
