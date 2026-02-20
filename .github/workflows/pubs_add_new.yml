@@ -1,9 +1,0 @@
-# Run every hour on the hour
-on:
-  push:
-
-jobs:
-  call-workflow-start:
-    uses: ./.github/workflows/common_start.yml
-  call-workflow-end:
-    uses: ./.github/workflows/common_end.yml
