@@ -204,7 +204,7 @@ def append_from_crossref(values, keys_to_update=RETRIEVE_FROM_CROSSREF,
             mods = json.dumps({"data": mods})
             result = requests.patch(url=url, data=mods, headers=header)
             if result.status_code != 204:
-                print("Issue modifying {doi}: {response}".format(DOI, result))
+                print(f"Issue modifying {DOI}: {result}")
             else:
                 changes_made = True
             for a in ['Content-Type', 'If-Unmodified-Since-Version']:
